@@ -48,17 +48,28 @@ export default {
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    materialIcons: false,
     theme: {
       dark: true,
       themes: {
+        light: {
+          primary: '#FA641E', /* '#1976D2' */
+          secondary: '#424242',
+          accent: '#82B1FF',
+          error: '#FF5252',
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#FA641E'
+        },
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          primary: '#FA641E', /* '#2196F3' */
+          secondary: '#424242',
+          accent: '#FF4081',
+          error: '#FF5252',
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#FA641E',
+          background: '#31373a'
         }
       }
     }
@@ -66,5 +77,45 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    buildDir: '.nuxt',
+    publicPath: '/assets/',
+    // https://github.com/nuxt/nuxt.js/issues/3828#issuecomment-508428611
+    filenames: {
+      app: ({ isDev }) => (isDev ? '[name].[hash].js' : '[chunkhash].js'),
+      chunk: ({ isDev }) => (isDev ? '[name].[hash].js' : '[chunkhash].js')
+    },
+    babel: {
+      presets ({ isServer }) {
+        let targets = isServer ? { node: '10' } : { ie: '11' };
+        return [
+          [
+            require.resolve('@nuxt/babel-preset-app'),
+            {
+              // targets
+              buildTarget: isServer ? 'server' : 'client',
+              corejs: { version: 3 }
+            }
+          ]
+        ]
+      },
+      env: {
+        production: {
+          plugins: []
+        }
+      }
+    },
+    /*
+     ** You can extend webpack config here
+     */
+    extend (config, { isDev, isClient }) {
+      if (isDev && isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
+    }
   }
 }
