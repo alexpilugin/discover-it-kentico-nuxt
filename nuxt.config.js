@@ -17,6 +17,7 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
+    '~assets/styles/main.css'
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -74,7 +75,13 @@ export default {
       }
     }
   },
-
+  pageTransition: {
+    name: "page", //css class: '~assets/styles/main.css'
+    mode: "out-in"
+  },
+  router: {
+    linkActiveClass: 'nuxt-active-link'
+  },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     buildDir: '.nuxt',

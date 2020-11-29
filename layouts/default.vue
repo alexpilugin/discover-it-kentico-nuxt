@@ -1,38 +1,9 @@
 <template>
   <v-app dark>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title />
-      <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
-    </v-app-bar>
+    <Navbar
+      :show-icons="false"
+      @toggle-right-drawer="rightDrawer = !rightDrawer"
+    />
 
     <v-main>
       <v-container>
@@ -48,14 +19,19 @@
       :hide-overlay="true"
       width="200px"
     >
-      <v-list>
-        <v-list-item @click.native="right = !right">
+      <v-list class="pt-0" dense>
+        <v-list-item
+          v-for="(item, index) in getNavMenu"
+          :key="`item-${index}`"
+          @click.stop="navigate(item.route)"
+        >
           <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
+            <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -65,17 +41,46 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex'
+
 import BottomFooter from '~/components/BottomFooter.vue'
+import Navbar from '~/components/Navbar.vue'
 
 export default {
   name: 'DefaultLayout',
   components: {
-    BottomFooter
+    BottomFooter,
+    Navbar
   },
   data () {
     return {
       fixed: true,
       rightDrawer: false
+    }
+  },
+  computed: {
+    ...mapState({
+      cafes: state => state.store.cafes
+    }),
+    ...mapGetters({
+      getNavMenu: 'store/getRightDrawerMenus'
+    })
+  },
+  created () {
+    if (!this.cafes || !this.cafes.length || !this.cafes.length <= 0) {
+      this.loadCafeItems()
+    }
+  },
+  methods: {
+    ...mapActions({
+      loadCafeItems: 'store/loadCafeItems'
+    }),
+    navigate (route) {
+      const self = this
+      setTimeout(function () {
+        // give time for animation
+        self.$router.push({ path: route })
+      }, 300)
     }
   }
 }
