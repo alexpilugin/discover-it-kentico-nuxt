@@ -107,6 +107,23 @@ export const getters = {
     // return a closure function:
     return getElements;
   },
+  getProjectItemTypes: (state) => {
+    const items = (state.projectItems.length && state.projectItems.length > 0) ? state.projectItems : undefined
+    if (items) {
+      const allTypes = items.map(item => item.system.type)
+      return Array.from(new Set(allTypes.sort()))
+    }
+  },
+  getItemsFilteredByType: (state) => {
+    const items = (state.projectItems.length && state.projectItems.length > 0) ? state.projectItems : undefined
+    function getFiltered (itemType) {
+      if (items) {
+        const filtered = items.filter(item => item.system.type === itemType);
+        return filtered
+      }
+    }
+    return getFiltered
+  },
   capitalizeText: state => capitalize,
   formattedDate: state => formatDate
 }

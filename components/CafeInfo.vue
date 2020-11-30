@@ -22,10 +22,10 @@
               <div>
                 <span>{{ info.elements.phone.name }}:</span> <span class="primary--text">{{ info.elements.phone.value }}</span> <br>
                 <span>{{ info.elements.email.name }}:</span> <span class="primary--text">{{ info.elements.email.value }}</span> <br>
+                <span>{{ info.elements.street.name }}:</span> <span class="primary--text">{{ info.elements.street.value }}</span> <br>
                 <span>{{ info.elements.city.name }}:</span> <span class="primary--text">{{ info.elements.city.value }}</span> <br>
                 <span>{{ info.elements.country.name }}:</span> <span class="primary--text">{{ info.elements.country.value }}</span> <br>
                 <span>{{ info.elements.state.name }}:</span> <span class="primary--text">{{ info.elements.state.value }}</span> <br>
-                <span>{{ info.elements.street.name }}:</span> <span class="primary--text">{{ info.elements.street.value }}</span> <br>
                 <span>{{ info.elements.zip_code.name }}:</span> <span class="primary--text">{{ info.elements.zip_code.value }}</span> <br>
 
                 <span v-if="info && info.system">Last update:</span> <span class="primary--text">{{ formattedDate(new Date(info.system.last_modified)) }}</span>
