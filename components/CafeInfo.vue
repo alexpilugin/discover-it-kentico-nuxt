@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="cafes" justify="center" align="center">
+  <v-row v-if="cafes && cafes.length && cafes.length > 0" justify="center" align="center">
     <v-col cols="12">
       <v-card color="#31373a">
         <v-container fluid>
@@ -28,9 +28,12 @@
                 <span>{{ info.elements.street.name }}:</span> <span class="primary--text">{{ info.elements.street.value }}</span> <br>
                 <span>{{ info.elements.zip_code.name }}:</span> <span class="primary--text">{{ info.elements.zip_code.value }}</span> <br>
 
-                <span>Last update:</span> <span class="primary--text">{{ formattedDate(new Date(info.system.last_modified)) }}</span>
+                <span v-if="info && info.system">Last update:</span> <span class="primary--text">{{ formattedDate(new Date(info.system.last_modified)) }}</span>
               </div>
             </v-col>
+          </v-row>
+          <v-row fill-height dense>
+            <PreviewCafe />
           </v-row>
         </v-container>
       </v-card>
@@ -40,9 +43,13 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import PreviewCafe from '@/components/PreviewCafe'
 
 export default {
   name: 'CafeInfo',
+  components: {
+    PreviewCafe
+  },
   props: {
     id: {
       type: String,
