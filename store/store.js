@@ -32,7 +32,30 @@ export const getters = {
   getRightDrawer: state => state.rightDrawerIsOpen,
   getRightDrawerMenus: state => state.menuItems,
   getLoadingStatus: state => state.loading,
-  isDarkThemeInUse: state => state.isDarkTheme
+  isDarkThemeInUse: state => state.isDarkTheme,
+  getCafeName: (state) => {
+    const cafes = (state.cafes.length && state.cafes.length > 0) ? state.cafes : undefined
+    function getName (index) {
+      if (cafes) {
+        return cafes[index].system.name;
+      }
+    }
+    // return a closure function:
+    return getName;
+  },
+  getCafeImage: (state) => {
+    const cafes = (state.cafes.length && state.cafes.length > 0) ? state.cafes : undefined
+    function getImage (index) {
+      if (cafes) {
+        return {
+          description: cafes[index].elements.photo.value[0].description,
+          url: cafes[index].elements.photo.value[0].url
+        }
+      }
+    }
+    // return a closure function:
+    return getImage;
+  }
 }
 
 export const mutations = {
