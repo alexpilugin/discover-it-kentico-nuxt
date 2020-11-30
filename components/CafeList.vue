@@ -13,10 +13,22 @@
           height="250"
           :src="getCafeImage(index).url"
           :alt="getCafeImage(index).description"
+          @click="navigate(getCafeId(index))"
         />
-        <v-card-title class="headline">
-          {{ getCafeName(index) }}
-        </v-card-title>
+        <v-container>
+          <v-row fill-height dense justify="center" align="center">
+            <v-col cols="12" md="6">
+              <div class="headline">
+                {{ getCafeName(index) }}
+              </div>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-flex class="primary--text text-lg-right">
+                {{ getCafeType(index) }}
+              </v-flex>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card>
     </v-col>
   </v-row>
@@ -33,8 +45,21 @@ export default {
     }),
     ...mapGetters({
       getCafeName: 'store/getCafeName',
-      getCafeImage: 'store/getCafeImage'
+      getCafeImage: 'store/getCafeImage',
+      getCafeType: 'store/getCafeType',
+      getCafeId: 'store/getCafeId',
+      getLastUpdate: 'store/getCafeLastUpdate'
     })
+  },
+  methods: {
+    navigate (cafeId) {
+      const self = this
+      const route = `/cafe/${cafeId}`
+      setTimeout(function () {
+        // give time for animation
+        self.$router.push({ path: route })
+      }, 300)
+    }
   }
 }
 </script>

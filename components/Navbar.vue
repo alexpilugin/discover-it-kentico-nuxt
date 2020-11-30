@@ -5,7 +5,7 @@
       flat
       dark
       elevation-0
-      absolute
+      fixed
       dense
       app
       color="#31373a"
@@ -18,8 +18,8 @@
 
       <v-btn
         icon
-        is-mobile-click-stop="toggleRightDrawer()"
         class="hidden-md-and-up"
+        @click="toggleRightDrawer()"
       >
         <v-icon>mdi-menu</v-icon>
       </v-btn>

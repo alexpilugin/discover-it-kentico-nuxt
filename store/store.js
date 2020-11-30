@@ -4,6 +4,15 @@ import axios from 'axios'
 const devMode = process.env.NODE_ENV === 'development';
 const projectID = 'b61a77df-b2e3-0095-a454-64ffc39d06d3';
 
+function formatDate (date) {
+  const formattedDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+  return formattedDate;
+}
+
+function capitalize (text) {
+  return text.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+}
+
 // Event names:
 export const EVENTS = {
   TOGGLE_DARK_THEME: 'TOGGLE_DARK_THEME',
@@ -43,6 +52,27 @@ export const getters = {
     // return a closure function:
     return getName;
   },
+  getCafeType: (state) => {
+    const cafes = (state.cafes.length && state.cafes.length > 0) ? state.cafes : undefined
+    function getName (index) {
+      if (cafes) {
+        return capitalize(cafes[index].system.type);
+      }
+    }
+    // return a closure function:
+    return getName;
+  },
+  getCafeLastUpdate: (state) => {
+    const cafes = (state.cafes.length && state.cafes.length > 0) ? state.cafes : undefined
+    function getUpdate (index) {
+      if (cafes) {
+        const date = new Date(cafes[index].system.last_modified);
+        return formatDate(date);
+      }
+    }
+    // return a closure function:
+    return getUpdate;
+  },
   getCafeImage: (state) => {
     const cafes = (state.cafes.length && state.cafes.length > 0) ? state.cafes : undefined
     function getImage (index) {
@@ -55,7 +85,30 @@ export const getters = {
     }
     // return a closure function:
     return getImage;
-  }
+  },
+  getCafeId: (state) => {
+    const cafes = (state.cafes.length && state.cafes.length > 0) ? state.cafes : undefined
+    function getRoute (index) {
+      if (cafes) {
+        return cafes[index].system.id
+      }
+    }
+    // return a closure function:
+    return getRoute;
+  },
+  getCafeDataElements: (state) => {
+    const cafes = (state.cafes.length && state.cafes.length > 0) ? state.cafes : undefined
+    function getElements (id) {
+      if (cafes) {
+        const selectedCafe = cafes.find(cafe => cafe.system.id === id); // first element
+        return selectedCafe;
+      }
+    }
+    // return a closure function:
+    return getElements;
+  },
+  capitalizeText: state => capitalize,
+  formattedDate: state => formatDate
 }
 
 export const mutations = {
